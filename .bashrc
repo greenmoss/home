@@ -57,7 +57,6 @@ if [ z`uname` = 'zSunOS' ]; then
 	if [ -d /opt/gentoo/bin ]; then
 		PATH=/opt/gentoo/bin:/opt/gentoo/usr/bin:/opt/gentoo/sbin:/opt/gentoo/usr/sbin:$PATH
 		export MANPATH=/opt/gentoo/usr/share/man:/opt/gentoo/usr/share/binutils-data/x86_64-pc-solaris2.10/2.20.1/man:/opt/gentoo/usr/share/gcc-data/x86_64-pc-solaris2.10/4.2.4/man:/usr/share/man
-		#export LESS="-R -M --shift 5"
 		alias ls='ls --color'
 	fi
 
@@ -65,6 +64,9 @@ if [ z`uname` = 'zSunOS' ]; then
 elif [ z`uname` = 'zLinux' ]; then 
 	alias ls='ls --color'
 	alias s="sudo"
+
+	# http://www.debian.org/doc/manuals/maint-guide/modify.en.html
+	alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 
 	#export PATH="$PATH:/var/lib/gems/1.8/bin"
 	# RHEL needs this; the default path is sparse
