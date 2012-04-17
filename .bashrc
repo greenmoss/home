@@ -1,4 +1,26 @@
-alias s=sudo
+# /etc/skel/.bashrc:
+# This file is sourced by all *interactive* bash shells on startup.  This
+# file *should generate no output* or it will break the scp and rcp commands.
+
+# colors for ls, etc.
+#eval `dircolors -b /etc/DIR_COLORS`
+#alias d="ls --color"
+#alias ls="ls --color=auto"
+#alias ll="ls --color -l"
+
+# Change the window title of X terminals 
+# INCOMPATIBLE with merge_history.bash
+#case $TERM in
+#	xterm*|rxvt|Eterm|eterm)
+#		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
+#		;;
+#	screen)
+#		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\033\\"'
+#		;;
+#esac
+
+# activate bash-completion, if we have it:
+[ -f /etc/bash_completion ] && source /etc/bash_completion
 
 export TERM=xterm
 #export PATH=/opt/local/bin:/opt/local/sbin:$PATH
@@ -26,9 +48,10 @@ alias vi="vim"
 alias sshn="ssh -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 alias scpn="scp -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 
+# Solaris
 if [ z`uname` = 'zSunOS' ]; then 
 	alias s="pfexec"
-	PATH=/usr/sfw/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+	export PATH=/usr/sfw/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 
 	# override Solaris with Gentoo Prefix
 	if [ -d /opt/gentoo/bin ]; then
@@ -38,14 +61,24 @@ if [ z`uname` = 'zSunOS' ]; then
 		alias ls='ls --color'
 	fi
 
+# Linux
 elif [ z`uname` = 'zLinux' ]; then 
-	#export PATH="$PATH:/var/lib/gems/1.8/bin"
-	export PATH="$PATH:/sbin:/usr/sbin"
 	alias ls='ls --color'
 	alias s="sudo"
 
+	#export PATH="$PATH:/var/lib/gems/1.8/bin"
+	# RHEL needs this; the default path is sparse
+	export PATH="$PATH:/sbin:/usr/sbin"
+
+# OS X
 elif [ z`uname` = 'zDarwin' ]; then 
 	alias ls='gls --color'
 	alias find=gfind
 	alias s="sudo"
+
+	# Setting PATH for Python 2.7
+	export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
+
+	# adding MacPorts to PATH
+	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 fi
