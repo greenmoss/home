@@ -1,6 +1,4 @@
 alias s=sudo
-#alias ls='gls --color'
-#alias find=gfind
 
 export TERM=xterm
 #export PATH=/opt/local/bin:/opt/local/sbin:$PATH
@@ -40,9 +38,14 @@ if [ z`uname` = 'zSunOS' ]; then
 		alias ls='ls --color'
 	fi
 
-else
+elif [ z`uname` = 'zLinux' ]; then 
 	#export PATH="$PATH:/var/lib/gems/1.8/bin"
 	export PATH="$PATH:/sbin:/usr/sbin"
 	alias ls='ls --color'
+	alias s="sudo"
+
+elif [ z`uname` = 'zDarwin' ]; then 
+	alias ls='gls --color'
+	alias find=gfind
 	alias s="sudo"
 fi
