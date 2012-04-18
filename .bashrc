@@ -45,15 +45,20 @@ elif [ z`uname` = 'zLinux' ]; then
 	alias ls='ls --color'
 	alias s="sudo"
 
-	# http://www.debian.org/doc/manuals/maint-guide/modify.en.html
-	alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+	# Debian/Ubuntu
+	if [ -f /etc/debian_version ]; then
+		# http://www.debian.org/doc/manuals/maint-guide/modify.en.html
+		alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 
-	#export PATH="$PATH:/var/lib/gems/1.8/bin"
-	# RHEL needs this; the default path is sparse
-	export PATH="$PATH:/sbin:/usr/sbin"
+	# RHELish
+	elif [ -f /etc/redhat-release ]; then
+		# the default path is sparse; 5.* only?
+		export PATH="$PATH:/sbin:/usr/sbin"
+	fi
 
 # OS X
 elif [ z`uname` = 'zDarwin' ]; then 
+	# assume macports
 	alias ls='gls --color'
 	alias find=gfind
 	alias s="sudo"
