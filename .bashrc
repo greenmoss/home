@@ -1,34 +1,14 @@
-# /etc/skel/.bashrc:
-# This file is sourced by all *interactive* bash shells on startup.  This
-# file *should generate no output* or it will break the scp and rcp commands.
+# Reminder:
+# this script is for bash non-interactive shell sessions only
+# it *should generate no output* or it will break the scp and rcp commands.
 
 # colors for ls, etc.
 #eval `dircolors -b /etc/DIR_COLORS`
-#alias d="ls --color"
-#alias ls="ls --color=auto"
-#alias ll="ls --color -l"
-
-# Change the window title of X terminals 
-# INCOMPATIBLE with merge_history.bash
-#case $TERM in
-#	xterm*|rxvt|Eterm|eterm)
-#		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\007"'
-#		;;
-#	screen)
-#		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/$HOME/~}\033\\"'
-#		;;
-#esac
-
-# activate bash-completion, if we have it:
-[ -f /etc/bash_completion ] && source /etc/bash_completion
 
 export TERM=xterm
-#export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export EDITOR="vim"
 export LESS="-SRXx3#3"
-#export PS1='\u@\h:\w\$ '
 export PAGER=less
-export LESS="-SRX"
 export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %b %T}\[\033[35m\] \[\033[0m\]\w\n\[\033[35m\]\[\033[0m\]\$ '
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 export HISTSIZE=500000
@@ -84,3 +64,5 @@ elif [ z`uname` = 'zDarwin' ]; then
 	# adding MacPorts to PATH
 	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 fi
+
+alias lr='ls -lrt'

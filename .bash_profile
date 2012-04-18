@@ -1,7 +1,11 @@
-. ~/.bashrc
+# Reminder:
+# this script is for bash interactive/login shell sessions only
+# everything from ~/.bashrc is automatically included
 
-#_byobu_sourced=1 . byobu-launch
-# it's a login shell, so resume/reattach screen
+# activate bash-completion, if we have it:
+[ -f /etc/bash_completion ] && source /etc/bash_completion
+
+# create/reattach byobu or screen
 if [ -z "$STY" ]; then
 	
 	# do we have byobu?
