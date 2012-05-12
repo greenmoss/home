@@ -7,7 +7,15 @@
 
 export TERM=xterm
 export EDITOR="vim"
-export LESS="-SRXx3#3"
+# #3 scroll rightwards: 3 chars
+# i ignore case
+# F quit if one screen
+# M long prompt
+# R raw control chars
+# S chop long lines
+# x3 tab stops: 3
+# X no termcap init
+export LESS="-#3iFMRSx3X"
 export PAGER=less
 export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %b %T}\[\033[35m\] \[\033[0m\]\w\n\[\033[35m\]\[\033[0m\]\$ '
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
