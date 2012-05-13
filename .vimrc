@@ -13,3 +13,6 @@ set nu
 " <Ctrl-l> redraws the screen and removes any search highlighting.
 nnoremap <silent> <C-l> :nohl<CR><C-l>
 set ruler
+" ignore case, unless we searched for capitalized characters
+set smartcase
+set ignorecase
