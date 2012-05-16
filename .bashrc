@@ -36,20 +36,8 @@ alias vi="vim"
 alias sshn="ssh -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 alias scpn="scp -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 
-# Solaris
-if [ z`uname` = 'zSunOS' ]; then 
-	alias s="pfexec"
-	export PATH=/usr/sfw/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
-
-	# override Solaris with Gentoo Prefix
-	if [ -d /opt/gentoo/bin ]; then
-		PATH=/opt/gentoo/bin:/opt/gentoo/usr/bin:/opt/gentoo/sbin:/opt/gentoo/usr/sbin:$PATH
-		export MANPATH=/opt/gentoo/usr/share/man:/opt/gentoo/usr/share/binutils-data/x86_64-pc-solaris2.10/2.20.1/man:/opt/gentoo/usr/share/gcc-data/x86_64-pc-solaris2.10/4.2.4/man:/usr/share/man
-		alias ls='ls --color'
-	fi
-
 # Linux
-elif [ z`uname` = 'zLinux' ]; then 
+if [ z`uname` = 'zLinux' ]; then 
 	alias ls='ls --color'
 	alias s="sudo"
 
@@ -76,6 +64,18 @@ elif [ z`uname` = 'zDarwin' ]; then
 
 	# adding MacPorts to PATH
 	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+
+# Solaris
+elif [ z`uname` = 'zSunOS' ]; then 
+	alias s="pfexec"
+	export PATH=/usr/sfw/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+
+	# override Solaris with Gentoo Prefix
+	if [ -d /opt/gentoo/bin ]; then
+		PATH=/opt/gentoo/bin:/opt/gentoo/usr/bin:/opt/gentoo/sbin:/opt/gentoo/usr/sbin:$PATH
+		export MANPATH=/opt/gentoo/usr/share/man:/opt/gentoo/usr/share/binutils-data/x86_64-pc-solaris2.10/2.20.1/man:/opt/gentoo/usr/share/gcc-data/x86_64-pc-solaris2.10/4.2.4/man:/usr/share/man
+		alias ls='ls --color'
+	fi
 fi
 
 alias lr='ls -lrt'
