@@ -1,6 +1,7 @@
-# Reminder:
-# this script is for bash interactive/login shell sessions only
-# everything from ~/.bashrc is automatically included
+# bashrc confusion
+# http://mywiki.wooledge.org/DotFiles
+# so I'm going to cheese out here:
+source ~/.bashrc
 
 # activate bash-completion, if we have it:
 [ -f /etc/bash_completion ] && source /etc/bash_completion
