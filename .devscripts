@@ -1,0 +1,4 @@
+##### dscverify
+# 
+# A colon separated list of extra keyrings to read.
+DSCVERIFY_KEYRINGS="~/.gnupg/pubring.gpg"
