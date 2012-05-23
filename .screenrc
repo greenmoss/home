@@ -1,1 +1,7 @@
+startup_message off
 term "screen-256color"
+hardstatus alwayslastline
+# can't figure out how to make screen list shrink to minimum, but here's a start:
+hardstatus string '%{= bw}%?%-Lw%?%{.wB}%n*%f%t%?(%u)%?%{.bw}%?%+Lw%{.bw}%= %H %Y-%m-%d %c:%s'
+# make the startup message go away
+msgwait 0
