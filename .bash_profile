@@ -29,7 +29,7 @@ if [ -z "$STY" ]; then
 
 	# otherwise, screen
 	elif [ $have_screen = 1 ]; then 
-		TERM=xterm screen -q -x -R -t base
+		TERM=xterm screen -q -x -R -t base -c ~/.screenrc.no_byobu
 
 	fi
 
