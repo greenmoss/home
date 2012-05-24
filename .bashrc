@@ -20,6 +20,7 @@ export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 HISTSIZE=500000
 HISTFILESIZE=5000000
+export BYOBU_NO_TITLE=1
 
 # ensure multi-line commands stay as a single history command
 shopt -s cmdhist

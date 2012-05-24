@@ -25,7 +25,7 @@ if [ -z "$STY" ]; then
 
 	# prefer byobu
 	if [ $have_byobu = 1 ]; then 
-		_byobu_sourced=1 BYOBU_NO_TITLE=1 byobu -q -x -R -t base
+		_byobu_sourced=1 byobu -q -x -R -t base
 
 	# otherwise, screen
 	elif [ $have_screen = 1 ]; then 
