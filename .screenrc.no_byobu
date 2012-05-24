@@ -51,7 +51,7 @@ backtick 108 	601	601		true # was byobu-status ec2_cost
 backtick 109 	607	607		true # was byobu-status hostname; changed below to "%H"
 backtick 110 	86029	86029		whoami # was byobu-status whoami
 backtick 111 	9999999	9999999		true # was byobu-status menu
-backtick 112 	9999999	9999999		uname -s -r -o # was byobu-status arch
+backtick 112 	9999999	9999999		uname -r -o # was byobu-status arch
 backtick 113 	61	61		true # was byobu-status battery
 backtick 114 	11	11		true # was byobu-status users
 backtick 115 	29	29		true # was byobu-status uptime; "uptime" is verbose on solaris
@@ -101,7 +101,7 @@ activity ""
 caption always "%{= bw}%?%-Lw%50L>%?%{=r}%n*%f %t%?(%u)%?%{-}%{= bw}%?%+Lw%?%11` %=%{= bW}%110`@%H%122`%111`%10`%<"
 
 # Status string, last line
-hardstatus string '%99`%{-}%{=r}%{= bW} %100`%112`%= %130`%102`%101`%129`%131`%127`%114`%115`%108`%128`%125`%126`%113`%119`%117`%116`%{= yk}%l%{= bW}%104`%103`%105`%107`%123`%132` %Y-%m-%d %c:%s'
+hardstatus string '%99`%{-}%{=r}%{= bW} %100`%112`%= %130`%102`%101`%129`%131`%127`%114`%115`%108`%128`%125`%126`%113`%119`%117`%116`%{= Yk}%l%{= bw}%104`%103`%105`%107`%123`%132` %Y-%m-%d %c:%s'
 
 # NOTE: Older version of screen have an arbitrary limit of only being able
 # to change colors 16 times in this 'hardstatus string'.
