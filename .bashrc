@@ -6,6 +6,7 @@
 
 export TERM=xterm
 export EDITOR="vim"
+export VISUAL=$EDITOR
 # #3 scroll rightwards: 3 chars
 # i ignore case
 # F quit if one screen
