@@ -32,6 +32,8 @@ shopt -s histverify
 shopt -s histappend
 # expand aliases for non-login shell
 shopt -s expand_aliases
+# vi mode
+set -o vi
 
 alias vi="vim"
 alias sshn="ssh -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
