@@ -22,6 +22,8 @@ export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 HISTSIZE=500000
 HISTFILESIZE=5000000
 export BYOBU_NO_TITLE=1
+# for my own python development, usually don't want bytecode file clutter
+export PYTHONDONTWRITEBYTECODE=x
 
 # ensure multi-line commands stay as a single history command
 shopt -s cmdhist
