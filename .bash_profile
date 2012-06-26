@@ -3,9 +3,6 @@
 # so I'm going to cheese out here:
 source ~/.bashrc
 
-# activate bash-completion, if we have it:
-[ -f /etc/bash_completion ] && source /etc/bash_completion
-
 # create/reattach byobu or screen
 if [ -z "$STY" ]; then
 	

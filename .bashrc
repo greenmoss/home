@@ -4,6 +4,43 @@
 # colors for ls, etc.
 #eval `dircolors -b /etc/DIR_COLORS`
 
+# activate bash-completion, if we have it:
+[ -f /etc/bash_completion ] && source /etc/bash_completion
+if [ -d ~/.bash_completion.d/ ]; then
+	for c in ~/.bash_completion.d/*; do
+		. "$c"
+	done
+fi
+
+
+__has_parent_dir () {
+	# Utility function so we can test for things like .git/.hg without firing
+	# up a separate process
+	test -d "$1" && return 0;
+
+	current="."
+	while [ ! "$current" -ef "$current/.." ]; do 
+		if [ -d "$current/$1" ]; then
+			return 0;
+		fi
+		current="$current/..";
+	done
+
+	return 1;
+}
+
+__vcs_name() {
+	if [ -d .svn ]; then 
+		echo " svn"; 
+	elif [ -d RCS ]; 	then 
+		echo " RCS";  
+	elif __has_parent_dir ".git"; then
+		echo "$(__git_ps1 " g %s")";
+	elif __has_parent_dir ".hg"; then
+		echo " h $(hg branch)"
+	fi
+}
+
 export TERM=xterm
 export EDITOR="vim"
 export VISUAL=$EDITOR
@@ -17,7 +54,7 @@ export VISUAL=$EDITOR
 # X no termcap init
 export LESS="-#3iFMRSx3X"
 export PAGER=less
-export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %b %T}\[\033[35m\] \[\033[0m\]\w\n\[\033[35m\]\[\033[0m\]\$ '
+export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %b %T}\[\033[35m\] \[\033[1;35m\]\w\[\033[32m\]$(__vcs_name)\n\[\033[35m\]\[\033[0m\]\$ '
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 HISTSIZE=500000
 HISTFILESIZE=5000000
