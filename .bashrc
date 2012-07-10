@@ -41,6 +41,48 @@ __vcs_name() {
 	fi
 }
 
+# prompt code
+# handy docs: http://blog.sanctum.geek.nz/bash-prompts/
+
+# colors
+export color_green='\[\e[0;32m\]'
+export color_maroon='\[\e[0;1;35m\]'
+export color_red_background='\[\e[0;41m\]'
+export color_teal='\[\e[0;36m\]'
+export color_white='\[\e[0;37m\]'
+export color_yellow='\[\e[0;33m\]'
+export color_yellow_background='\[\e[0;43m\]'
+
+export color_reset='\[\e[0m\]'
+
+user_color() {
+	if [[ $EUID -eq 0 ]]; then
+		echo $color_red_background
+	elif [[ -n $SUDO_USER ]]; then
+		echo $color_yellow_background
+	else
+		echo $color_reset
+	fi
+}
+
+# invisible/control components
+set_terminal_title='\[\e]0;\h\007\]' # set terminal title to host name
+
+# colored components
+user_and_host=$color_yellow'\u@\h' # user@host
+date_and_time=$color_teal'\D{%d %b %T}' # day month HH:MM:SS
+working_dir=$color_maroon'\w' # current working directory
+repo=$color_green$(__vcs_name) # vcs info, from $__vcs_name custom function
+got_root=$(user_color)'\$' # do we have root? $ or #
+
+# gather the pieces together to set the bash prompt:
+visible_prompt="
+${user_and_host} ${date_and_time} ${working_dir}${repo}
+${got_root}${color_reset} "
+export PS1="${set_terminal_title}${visible_prompt}"
+
+# end of bash prompt config
+
 export TERM=xterm
 export EDITOR="vim"
 export VISUAL=$EDITOR
@@ -54,7 +96,6 @@ export VISUAL=$EDITOR
 # X no termcap init
 export LESS="-#3iFMRSx3X"
 export PAGER=less
-export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %b %T}\[\033[35m\] \[\033[1;35m\]\w\[\033[32m\]$(__vcs_name)\n\[\033[35m\]\[\033[0m\]\$ '
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 HISTSIZE=500000
 HISTFILESIZE=5000000
