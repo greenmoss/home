@@ -45,23 +45,25 @@ __vcs_name() {
 # handy docs: http://blog.sanctum.geek.nz/bash-prompts/
 
 # colors
-export color_green='\[\e[0;32m\]'
-export color_maroon='\[\e[0;1;35m\]'
-export color_red_background='\[\e[0;41m\]'
-export color_teal='\[\e[0;36m\]'
-export color_white='\[\e[0;37m\]'
-export color_yellow='\[\e[0;33m\]'
-export color_yellow_background='\[\e[0;43m\]'
+color_green='\[\e[0;32m\]'
+color_maroon='\[\e[0;1;35m\]'
+color_teal='\[\e[0;36m\]'
+color_white='\[\e[0;37m\]'
+color_yellow='\[\e[0;33m\]'
 
-export color_reset='\[\e[0m\]'
+color_reset='\[\e[0m\]'
 
 user_color() {
+	# don't know why these must have the \[ and \] removed:
+	color_red_background='\e[0;41m'
+	color_yellow_background='\e[0;43m'
+	color_reset='\e[0m'
 	if [[ $EUID -eq 0 ]]; then
-		echo $color_red_background
+		printf $color_red_background
 	elif [[ -n $SUDO_USER ]]; then
-		echo $color_yellow_background
+		printf $color_yellow_background
 	else
-		echo $color_reset
+		printf $color_reset
 	fi
 }
 
@@ -72,8 +74,8 @@ set_terminal_title='\[\e]0;\h\007\]' # set terminal title to host name
 user_and_host=$color_yellow'\u@\h' # user@host
 date_and_time=$color_teal'\D{%d %b %T}' # day month HH:MM:SS
 working_dir=$color_maroon'\w' # current working directory
-repo=$color_green$(__vcs_name) # vcs info, from $__vcs_name custom function
-got_root=$(user_color)'\$' # do we have root? $ or #
+repo=$color_green'$(__vcs_name)' # vcs info, from $__vcs_name custom function
+got_root='$(user_color)\$' # do we have root? $ or #
 
 # gather the pieces together to set the bash prompt:
 visible_prompt="
