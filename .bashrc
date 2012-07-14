@@ -76,7 +76,7 @@ set_terminal_title='\[\e]0;\h\007\]' # set terminal title to host name
 user_and_host=${color_yellow}'\u@\h' # user@host
 date_and_time=${color_teal}'\D{%d %b %T}' # day month HH:MM:SS
 working_dir=${color_maroon}'\w' # current working directory
-repo=${color_green}$(__vcs_name) # vcs info, from $__vcs_name custom function
+repo=${color_green}'$(__vcs_name)' # vcs info, from $__vcs_name custom function
 got_root=${user_color}'\$' # do we have root? $ or #
 
 # gather the pieces together to set the bash prompt:
