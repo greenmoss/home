@@ -53,29 +53,31 @@ color_yellow='\[\e[0;33m\]'
 
 color_reset='\[\e[0m\]'
 
-user_color() {
-	# don't know why these must have the \[ and \] removed:
-	color_red_background='\e[0;41m'
-	color_yellow_background='\e[0;43m'
-	color_reset='\e[0m'
+# variable color, depending on whether we are root, sudo'd as a user, or simply us
+set_user_color() {
+	# \[, \e, and \] would need extra escaping, so for clarity we return only the color code
+	white_on_red='[0;41m'
+	yellow_on_blue='[0;33;44m'
+	color_reset='[0m'
 	if [[ $EUID -eq 0 ]]; then
-		printf $color_red_background
+		echo $white_on_red
 	elif [[ -n $SUDO_USER ]]; then
-		printf $color_yellow_background
+		echo $yellow_on_blue
 	else
 		printf $color_reset
 	fi
 }
+user_color='\[\e$(set_user_color)\]'
 
 # invisible/control components
 set_terminal_title='\[\e]0;\h\007\]' # set terminal title to host name
 
 # colored components
-user_and_host=$color_yellow'\u@\h' # user@host
-date_and_time=$color_teal'\D{%d %b %T}' # day month HH:MM:SS
-working_dir=$color_maroon'\w' # current working directory
-repo=$color_green'$(__vcs_name)' # vcs info, from $__vcs_name custom function
-got_root='$(user_color)\$' # do we have root? $ or #
+user_and_host=${color_yellow}'\u@\h' # user@host
+date_and_time=${color_teal}'\D{%d %b %T}' # day month HH:MM:SS
+working_dir=${color_maroon}'\w' # current working directory
+repo=${color_green}$(__vcs_name) # vcs info, from $__vcs_name custom function
+got_root=${user_color}'\$' # do we have root? $ or #
 
 # gather the pieces together to set the bash prompt:
 visible_prompt="
@@ -86,7 +88,7 @@ export PS1="${set_terminal_title}${visible_prompt}"
 # end of bash prompt config
 
 export TERM=xterm
-export EDITOR="vim"
+export EDITOR=vim
 export VISUAL=$EDITOR
 # #3 scroll rightwards: 3 chars
 # i ignore case
