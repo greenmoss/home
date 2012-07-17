@@ -165,4 +165,7 @@ elif [ z`uname` = 'zSunOS' ]; then
 	fi
 fi
 
+# also use my own personal executables
+PATH=$PATH:~/bin
+
 alias lr='ls -lrt'
