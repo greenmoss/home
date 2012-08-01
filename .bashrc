@@ -41,8 +41,54 @@ __vcs_name() {
 	fi
 }
 
+# prompt code
+# handy docs: http://blog.sanctum.geek.nz/bash-prompts/
+
+# colors
+color_green='\[\e[0;32m\]'
+color_maroon='\[\e[0;1;35m\]'
+color_teal='\[\e[0;36m\]'
+color_white='\[\e[0;37m\]'
+color_yellow='\[\e[0;33m\]'
+
+color_reset='\[\e[0m\]'
+
+# variable color, depending on whether we are root, sudo'd as a user, or simply us
+set_user_color() {
+	# \[, \e, and \] would need extra escaping, so for clarity we return only the color code
+	white_on_red='[0;41m'
+	yellow_on_blue='[0;33;44m'
+	color_reset='[0m'
+	if [[ $EUID -eq 0 ]]; then
+		echo $white_on_red
+	elif [[ -n $SUDO_USER ]]; then
+		echo $yellow_on_blue
+	else
+		printf $color_reset
+	fi
+}
+user_color='\[\e$(set_user_color)\]'
+
+# invisible/control components
+set_terminal_title='\[\e]0;\h\007\]' # set terminal title to host name
+
+# colored components
+user_and_host=${color_yellow}'\u@\h' # user@host
+date_and_time=${color_teal}'\D{%d %b %T}' # day month HH:MM:SS
+working_dir=${color_maroon}'\w' # current working directory
+repo=${color_green}'$(__vcs_name)' # vcs info, from $__vcs_name custom function
+got_root=${user_color}'\$' # do we have root? $ or #
+
+# gather the pieces together to set the bash prompt:
+visible_prompt="
+${user_and_host} ${date_and_time} ${working_dir}${repo}
+${got_root}${color_reset} "
+export PS1="${set_terminal_title}${visible_prompt}"
+
+# end of bash prompt config
+
 export TERM=xterm
-export EDITOR="vim"
+export EDITOR=vim
 export VISUAL=$EDITOR
 # #3 scroll rightwards: 3 chars
 # i ignore case
@@ -54,7 +100,6 @@ export VISUAL=$EDITOR
 # X no termcap init
 export LESS="-#3iFMRSx3X"
 export PAGER=less
-export PS1='\[\033]0;\h\007\]\n\[\033[35m\]\[\033[33m\]\u@\h \[\033[36m\]\D{%d %b %T}\[\033[35m\] \[\033[1;35m\]\w\[\033[32m\]$(__vcs_name)\n\[\033[35m\]\[\033[0m\]\$ '
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 HISTSIZE=500000
 HISTFILESIZE=5000000
@@ -119,5 +164,8 @@ elif [ z`uname` = 'zSunOS' ]; then
 		alias ls='ls --color'
 	fi
 fi
+
+# also use my own personal executables
+PATH=$PATH:~/bin
 
 alias lr='ls -lrt'
