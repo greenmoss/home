@@ -22,7 +22,10 @@ if [ -z "$STY" ]; then
 
 	# prefer byobu
 	if [ $have_byobu = 1 ]; then 
-		_byobu_sourced=1 byobu -q -x -R -t base
+		# specifying title hangs screen on Ubuntu Precise
+		# So disabling until this bug is fixed
+		# https://bugs.launchpad.net/byobu/+bug/1031925
+		_byobu_sourced=1 byobu -q -x -R #-t base
 
 	# otherwise, screen
 	elif [ $have_screen = 1 ]; then 
