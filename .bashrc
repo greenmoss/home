@@ -122,6 +122,7 @@ set -o vi
 alias vi="vim"
 alias sshn="ssh -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 alias scpn="scp -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
+alias trunz="truncate -s 0"
 
 # Linux
 if [ z`uname` = 'zLinux' ]; then 
