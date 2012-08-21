@@ -15,6 +15,8 @@ set ruler
 set smartcase
 set ignorecase
 
+autocmd BufReadPost * :DetectIndent
+
 augroup json_autocmd 
 	autocmd! 
 	autocmd FileType json set autoindent 
