@@ -153,6 +153,13 @@ elif [ z`uname` = 'zDarwin' ]; then
 	# adding MacPorts to PATH
 	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
+	VIRTUALENVWRAPPER_VIRTUALENV='/opt/local/bin/virtualenv-2.7'
+	VIRTUALENVWRAPPER='/opt/local/bin/virtualenvwrapper.sh-2.7'
+	if [ ! -f $VIRTUALENVWRAPPER_VIRTUALENV -o ! -f $VIRTUALENVWRAPPER ]; then
+		unset VIRTUALENVWRAPPER_VIRTUALENV
+		unset VIRTUALENVWRAPPER
+	fi
+
 # Solaris
 elif [ z`uname` = 'zSunOS' ]; then 
 	alias s="pfexec"
@@ -170,3 +177,11 @@ fi
 PATH=$PATH:~/bin
 
 alias lr='ls -lrt'
+
+# virtualenvwrapper and virtualenv
+if [ -n "$VIRTUALENVWRAPPER" -a -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
+	export PROJECT_HOME=$HOME/Coding
+	export VIRTUALENVWRAPPER_VIRTUALENV
+	export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages --distribute'
+	source $VIRTUALENVWRAPPER
+fi
