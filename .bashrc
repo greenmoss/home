@@ -147,10 +147,7 @@ elif [ z`uname` = 'zDarwin' ]; then
 	alias find=gfind
 	alias s="sudo"
 
-	# Setting PATH for Python 2.7
-	export PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
-
-	# adding MacPorts to PATH
+	# add MacPorts to PATH
 	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 	VIRTUALENVWRAPPER_VIRTUALENV='/opt/local/bin/virtualenv-2.7'
@@ -180,8 +177,7 @@ alias lr='ls -lrt'
 
 # virtualenvwrapper and virtualenv
 if [ -n "$VIRTUALENVWRAPPER" -a -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
-	export PROJECT_HOME=$HOME/Coding
 	export VIRTUALENVWRAPPER_VIRTUALENV
-	export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages --distribute'
+	export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 	source $VIRTUALENVWRAPPER
 fi
