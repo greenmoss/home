@@ -116,6 +116,8 @@ shopt -s histverify
 shopt -s histappend
 # expand aliases for non-login shell
 shopt -s expand_aliases
+# include dot-files in glob expansion
+shopt -s dotglob
 # vi mode
 set -o vi
 
@@ -123,6 +125,11 @@ alias vi="vim"
 alias sshn="ssh -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 alias scpn="scp -o UserKnownHostsFile=/dev/null -o GlobalKnownHostsFile=/dev/null"
 alias trunz="truncate -s 0"
+
+# only pull things from previous history matching line typed so far
+bind '"\e[A":history-search-backward'
+# only pull things from following history matching line typed so far
+bind '"\e[B":history-search-backward'
 
 # Linux
 if [ z`uname` = 'zLinux' ]; then 
@@ -147,8 +154,8 @@ elif [ z`uname` = 'zDarwin' ]; then
 	alias find=gfind
 	alias s="sudo"
 
-	# add MacPorts to PATH
-	export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+	# add MacPorts and /usr/local to PATH
+	export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:$PATH
 
 	VIRTUALENVWRAPPER_VIRTUALENV='/opt/local/bin/virtualenv-2.7'
 	VIRTUALENVWRAPPER='/opt/local/bin/virtualenvwrapper.sh-2.7'
@@ -171,7 +178,7 @@ elif [ z`uname` = 'zSunOS' ]; then
 fi
 
 # also use my own personal executables
-PATH=$PATH:~/bin
+PATH=$PATH:~/bin:~/.cabal/bin
 
 alias lr='ls -lrt'
 
@@ -181,3 +188,6 @@ if [ -n "$VIRTUALENVWRAPPER" -a -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
 	export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 	source $VIRTUALENVWRAPPER
 fi
+
+# rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
