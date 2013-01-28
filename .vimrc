@@ -14,6 +14,8 @@ set ruler
 " ignore case, unless we searched for capitalized characters
 set smartcase
 set ignorecase
+" check first/last 5 lines of file for vim modelines
+set modeline modelines=5
 
 autocmd BufReadPost * :DetectIndent
 
