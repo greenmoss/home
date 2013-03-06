@@ -190,4 +190,4 @@ if [ -n "$VIRTUALENVWRAPPER" -a -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
 fi
 
 # rbenv
-if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+if which rbenv > /dev/null 2>&1; then eval "$(rbenv init -)"; fi
