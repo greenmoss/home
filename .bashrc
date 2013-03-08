@@ -149,16 +149,18 @@ if [ z`uname` = 'zLinux' ]; then
 
 # OS X
 elif [ z`uname` = 'zDarwin' ]; then 
-	# assume macports
-	alias ls='gls --color'
-	alias find=gfind
+	# Homebrew executables
+	export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+	# gnu coreutils
+	export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+	export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
+
+	alias ls='ls --color'
+	command -v gfind >/dev/null && alias find=gfind
 	alias s="sudo"
 
-	# add MacPorts and /usr/local to PATH
-	export PATH=/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:$PATH
-
-	VIRTUALENVWRAPPER_VIRTUALENV='/opt/local/bin/virtualenv-2.7'
-	VIRTUALENVWRAPPER='/opt/local/bin/virtualenvwrapper.sh-2.7'
+	VIRTUALENVWRAPPER_VIRTUALENV='/usr/local/share/python/virtualenv'
+	VIRTUALENVWRAPPER='/usr/local/share/python/virtualenvwrapper.sh'
 	if [ ! -f $VIRTUALENVWRAPPER_VIRTUALENV -o ! -f $VIRTUALENVWRAPPER ]; then
 		unset VIRTUALENVWRAPPER_VIRTUALENV
 		unset VIRTUALENVWRAPPER
@@ -191,3 +193,8 @@ fi
 
 # rbenv
 if which rbenv > /dev/null 2>&1; then eval "$(rbenv init -)"; fi
+
+# push/pop shortcuts
+alias u='pushd'
+alias o='popd'
+alias d='dirs'
