@@ -1,0 +1,152 @@
+#!/usr/bin/env ruby
+# copied from https://github.com/nene/config/blob/master/bin/git-praise
+format = "%s %Cred%h%Cblue (%ad) %Cgreen%an%Creset"
+
+def pretty_print(format, hash, commit, line)
+  # background color first, then foreground color
+  colored_sequence = "\e[#{@colors[@commits[hash][:color][0]]}m" + "\e[#{@colors[@commits[hash][:color][1]]}m"
+  desc = format.
+    gsub(/%H/, hash).
+    gsub(/%h/, hash[0,8]).
+    gsub(/%an/, sprintf(@author_f, commit[:author])).
+    gsub(/%ae/, sprintf(@mail_f, commit[:author_mail])).
+    gsub(/%ad/, commit[:author_time].strftime("%d. %b %Y")).
+    gsub(/%s/, colored_sequence + sprintf("%3d", commit[:sequence]) + "\e[0m").
+    gsub(/%Cred/, "\e[#{@colors['red']}m").
+    gsub(/%Cgreen/, "\e[#{@colors['green']}m").
+    gsub(/%Cblue/, "\e[#{@colors['blue']}m").
+    gsub(/%Creset/, "\e[0m")
+  puts desc + "\t" + line
+end
+
+# terminal colors
+@colors = {
+  'bg_black' => '40',
+  'bg_blue' => '44',
+  'bg_brown' => '43',
+  'bg_cyan' => '46',
+  'bg_green' => '42',
+  'bg_l_gray' => '47',
+  'bg_purple' => '45',
+  'bg_red' => '41',
+  'black' => '0;30',
+  'blue' => '0;34',
+  'brown' => '0;33',
+  'cyan' => '0;36',
+  'gray' => '1;30',
+  'green' => '0;32',
+  'l_blue' => '1;34',
+  'l_cyan' => '1;36',
+  'l_gray' => '0;37',
+  'l_green' => '1;32',
+  'l_purple' => '1;35',
+  'l_red' => '1;31',
+  'purple' => '0;35',
+  'red' => '0;31',
+  'white' => '1;37',
+  'yellow' => '1;33',
+}
+
+path = ARGV[0]
+
+hash = ""
+@commits = {}
+commit_lines = []
+`git blame -p #{path}`.split("\n").each do |line|
+  if line =~ /^([0-9a-f]{39,40})\s.*/
+    hash = $1
+    @commits[hash] = {} unless @commits[hash]
+  elsif line =~ /^author (.+)/
+    @commits[hash][:author] = $1.strip
+  elsif line =~ /^author-mail (.+)/
+    @commits[hash][:author_mail] = $1.strip
+  elsif line =~ /^author-time (.+)/
+    @commits[hash][:author_time] = Time.at($1.strip.to_i)
+  elsif line =~ /^author-tz (.+)/
+    @commits[hash][:author_tz] = $1.strip
+  elsif line =~ /^committer (.+)/
+    @commits[hash][:committer] = $1.strip
+  elsif line =~ /^committer-mail (.+)/
+    @commits[hash][:committer_mail] = $1.strip
+  elsif line =~ /^committer-time (.+)/
+    @commits[hash][:committer_time] = Time.at($1.strip.to_i)
+  elsif line =~ /^committer-tz (.+)/
+    @commits[hash][:committer_tz] = $1.strip
+  elsif line =~ /^summary (.+)/
+    @commits[hash][:summary] = $1.strip
+  elsif line =~ /^previous (.+)/
+    @commits[hash][:previous] = $1.strip
+  elsif line =~ /^filename (.+)/
+    @commits[hash][:filename] = $1.strip
+  elsif line =~ /^\t(.*)/
+    commit_lines << {'hash' => hash, 'code' => $1}
+  end
+end
+
+# set sequence of commits
+# set up high-contrast/varied colors
+color_seq = [
+  %w/bg_blue gray/,
+  %w/bg_brown l_blue/,
+  %w/bg_cyan l_blue/,
+  %w/bg_green white/,
+  %w/bg_l_gray l_blue/,
+  %w/bg_purple l_cyan/,
+  %w/bg_red l_green/,
+  %w/bg_black yellow/,
+  %w/bg_blue l_cyan/,
+  %w/bg_brown l_red/,
+  %w/bg_cyan yellow/,
+  %w/bg_green l_blue/,
+  %w/bg_l_gray l_red/,
+  %w/bg_purple white/,
+  %w/bg_red yellow/,
+  %w/bg_black l_green/,
+  %w/bg_blue l_purple/,
+  %w/bg_brown white/,
+  %w/bg_cyan l_red/,
+  %w/bg_green l_red/,
+  %w/bg_l_gray yellow/,
+  %w/bg_purple l_blue/,
+  %w/bg_red l_blue/,
+  %w/bg_black purple/,
+]
+@commits.
+  keys.
+  sort_by{ |id| 
+    @commits[id][:committer_time].to_i
+  }.
+  each_with_index{ |id, position|
+    @commits[id][:sequence] = position + 1
+    @commits[id][:color] = color_seq[position % color_seq.length]
+  }
+
+# get longest author name/mail
+longest_author = ''
+longest_mail = ''
+@commits.
+  keys.
+  each{ |id|
+    info = @commits[id]
+    longest_author = info[:author] if info[:author].length > longest_author.length
+    longest_mail = info[:author_mail] if info[:author_mail].length > longest_mail.length
+  }
+@author_f = "%#{longest_author.length}s"
+@mail_f = "%#{longest_mail.length}s"
+
+commit_lines.each{ |line|
+  pretty_print(format, line['hash'], @commits[line['hash']], line['code'])
+}
+
+# to tweak colors in color_seq, uncomment the following:
+#@colors.keys.sort.each{ |bg_name|
+#  next unless bg_name =~ /^bg_/
+#  print "#{bg_name}: "
+#  bg_code = @colors[bg_name]
+#  @colors.keys.sort.each{ |fg_name|
+#    next if fg_name =~ /^bg_/
+#    fg_code = @colors[fg_name]
+#    print " \e[#{bg_code}m\e[#{fg_code}m#{fg_name}\e[0m"
+#  }
+#  print "\n"
+#}
