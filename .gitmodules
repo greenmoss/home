@@ -1,3 +1,9 @@
 [submodule ".vim"]
 	path = .vim
 	url = ./.vim
+[submodule "DetectIndent"]
+	path = DetectIndent
+	url = ./.janus/DetectIndent/
+[submodule "Wavefronts-obj"]
+	path = Wavefronts-obj
+	url = ./.janus/Wavefronts-obj/
