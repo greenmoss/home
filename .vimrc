@@ -1,1 +1,0 @@
-/Users/kydev/.vim/janus/vim/vimrc
