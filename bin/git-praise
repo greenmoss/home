@@ -4,14 +4,17 @@ format = "%s %Cred%h%Cblue (%ad) %Cgreen%an%Creset"
 
 def pretty_print(format, hash, commit, line)
   # background color first, then foreground color
-  colored_sequence = "\e[#{@colors[@commits[hash][:color][0]]}m" + "\e[#{@colors[@commits[hash][:color][1]]}m"
+  commit_seq = "\e[#{@colors[@commits[hash][:color][0]]}m" + "\e[#{@colors[@commits[hash][:color][1]]}m"
+  author_seq = "\e[#{@colors[@people[commit[:author]][0]]}m" + "\e[#{@colors[@people[commit[:author]][1]]}m"
+  author_mail_seq = "\e[#{@colors[@people[commit[:author_mail]][0]]}m" + "\e[#{@colors[@people[commit[:author_mail]][1]]}m"
+  end_seq = "\e[0m"
   desc = format.
     gsub(/%H/, hash).
     gsub(/%h/, hash[0,8]).
-    gsub(/%an/, sprintf(@author_f, commit[:author])).
-    gsub(/%ae/, sprintf(@mail_f, commit[:author_mail])).
+    gsub(/%an/, author_seq + sprintf(@author_f, commit[:author]) + end_seq).
+    gsub(/%ae/, author_mail_seq + sprintf(@mail_f, commit[:author_mail]) + end_seq).
     gsub(/%ad/, commit[:author_time].strftime("%d. %b %Y")).
-    gsub(/%s/, colored_sequence + sprintf("%3d", commit[:sequence]) + "\e[0m").
+    gsub(/%s/, commit_seq + sprintf("%3d", commit[:sequence]) + end_seq).
     gsub(/%Cred/, "\e[#{@colors['red']}m").
     gsub(/%Cgreen/, "\e[#{@colors['green']}m").
     gsub(/%Cblue/, "\e[#{@colors['blue']}m").
@@ -51,23 +54,32 @@ path = ARGV[0]
 
 hash = ""
 @commits = {}
+@people = {}
 commit_lines = []
 `git blame -p #{path}`.split("\n").each do |line|
   if line =~ /^([0-9a-f]{39,40})\s.*/
     hash = $1
     @commits[hash] = {} unless @commits[hash]
   elsif line =~ /^author (.+)/
-    @commits[hash][:author] = $1.strip
+    id = $1.strip
+    @people[id] = 0
+    @commits[hash][:author] = id
   elsif line =~ /^author-mail (.+)/
-    @commits[hash][:author_mail] = $1.strip
+    id = $1.strip
+    @people[id] = 0
+    @commits[hash][:author_mail] = id
   elsif line =~ /^author-time (.+)/
     @commits[hash][:author_time] = Time.at($1.strip.to_i)
   elsif line =~ /^author-tz (.+)/
     @commits[hash][:author_tz] = $1.strip
   elsif line =~ /^committer (.+)/
-    @commits[hash][:committer] = $1.strip
+    id = $1.strip
+    @people[id] = 0
+    @commits[hash][:committer] = id
   elsif line =~ /^committer-mail (.+)/
-    @commits[hash][:committer_mail] = $1.strip
+    id = $1.strip
+    @people[id] = 0
+    @commits[hash][:committer_mail] = id
   elsif line =~ /^committer-time (.+)/
     @commits[hash][:committer_time] = Time.at($1.strip.to_i)
   elsif line =~ /^committer-tz (.+)/
@@ -119,6 +131,12 @@ color_seq = [
   each_with_index{ |id, position|
     @commits[id][:sequence] = position + 1
     @commits[id][:color] = color_seq[position % color_seq.length]
+  }
+@people.
+  keys.
+  sort.
+  each_with_index{ |id, position|
+    @people[id] = color_seq[position % color_seq.length]
   }
 
 # get longest author name/mail
