@@ -27,3 +27,5 @@ set modeline modelines=5
 
 " DetectIndent
 :autocmd Filetype * :DetectIndent 
+
+au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
