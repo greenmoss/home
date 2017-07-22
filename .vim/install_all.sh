@@ -1,7 +1,11 @@
 #!/usr/bin/env sh
 set -e
+
+mkdir -p ~/.vim/autoload ~/.vim/bundle
+
+# pathogen
+curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
+
+# detectindent
 cd ~/.vim/bundle
-for REPO in https://github.com/ciaranm/detectindent
-do
-  git clone $REPO
-done
+git clone https://github.com/ciaranm/detectindent
