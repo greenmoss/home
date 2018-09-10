@@ -198,3 +198,7 @@ if which rbenv > /dev/null 2>&1; then eval "$(rbenv init -)"; fi
 alias u='pushd'
 alias o='popd'
 alias d='dirs'
+
+#show off (nothing)
+alias cyphertracer='hexdump -C /dev/random | grep --color=always "ca fe"'
+
