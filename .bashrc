@@ -92,13 +92,12 @@ export EDITOR=vim
 export VISUAL=$EDITOR
 # #3 scroll rightwards: 3 chars
 # i ignore case
-# F quit if one screen
 # M long prompt
 # R raw control chars
 # S chop long lines
 # x3 tab stops: 3
 # X no termcap init
-export LESS="-#3iFMRSx3X"
+export LESS="-#3iMRSx3X"
 export PAGER=less
 export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
 HISTSIZE=500000
