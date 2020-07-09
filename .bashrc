@@ -201,3 +201,14 @@ alias d='dirs'
 #show off (nothing)
 alias cyphertracer='hexdump -C /dev/random | grep --color=always "ca fe"'
 
+# https://apple.stackexchange.com/questions/371997/suppressing-zsh-verbose-message-in-macos-catalina
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
+# https://apple.stackexchange.com/questions/141702/open-a-new-safari-window-in-the-current-space-from-terminal-with-multiple-tabs/141721#141721
+function Safari {
+  # Will open a New Safari window with argument 1.
+  osascript <<EOD
+  tell application "Safari" to make new document with properties {URL:"$1"}
+  return
+EOD
+}
