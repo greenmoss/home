@@ -11,6 +11,7 @@ cd ~/.vim/bundle
 for repo in \
   "https://github.com/ciaranm/detectindent" \
   "https://github.com/plasticboy/vim-markdown" \
+  "https://github.com/preservim/nerdtree.git" \
 
 do
   mydir=$(basename $repo)
