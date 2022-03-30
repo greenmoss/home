@@ -29,3 +29,7 @@ set modeline modelines=5
 :autocmd Filetype * :DetectIndent 
 
 au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+
+" Using a mouse in vim? I can't even
+set mouse=
+set ttymouse=
