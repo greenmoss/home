@@ -33,3 +33,6 @@ au BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 " Using a mouse in vim? I can't even
 set mouse=
 set ttymouse=
+
+" vim 9 workaround: https://github.com/preservim/nerdtree/issues/1321
+let g:NERDTreeMinimalMenu=1
