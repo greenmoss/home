@@ -212,3 +212,9 @@ function Safari {
   return
 EOD
 }
+
+if [ -d $(brew --prefix)/etc/bash_completion.d/ ]; then
+  for c in $(brew --prefix)/etc/bash_completion.d/*; do
+     . "$c"
+  done
+fi
