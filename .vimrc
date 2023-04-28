@@ -2,7 +2,7 @@ execute pathogen#infect()
 
 syntax on
 filetype plugin indent on
-colorscheme koehler
+colorscheme murphy
 set background=dark
 
 set shiftwidth=2
@@ -36,3 +36,8 @@ set ttymouse=
 
 " vim 9 workaround: https://github.com/preservim/nerdtree/issues/1321
 let g:NERDTreeMinimalMenu=1
+
+" https://stackoverflow.com/a/15317146
+set backupdir=~/.vim/backup//
+set directory=~/.vim/swap//
+set undodir=~/.vim/undo//
