@@ -7,38 +7,38 @@
 # activate bash-completion, if we have it:
 [ -f /etc/bash_completion ] && source /etc/bash_completion
 if [ -d ~/.bash_completion.d/ ]; then
-	for c in ~/.bash_completion.d/*; do
-		. "$c"
-	done
+  for c in ~/.bash_completion.d/*; do
+    . "$c"
+  done
 fi
 
 
 __has_parent_dir () {
-	# Utility function so we can test for things like .git/.hg without firing
-	# up a separate process
-	test -d "$1" && return 0;
+  # Utility function so we can test for things like .git/.hg without firing
+  # up a separate process
+  test -d "$1" && return 0;
 
-	current="."
-	while [ ! "$current" -ef "$current/.." ]; do 
-		if [ -d "$current/$1" ]; then
-			return 0;
-		fi
-		current="$current/..";
-	done
+  current="."
+  while [ ! "$current" -ef "$current/.." ]; do
+    if [ -d "$current/$1" ]; then
+      return 0;
+    fi
+    current="$current/..";
+  done
 
-	return 1;
+  return 1;
 }
 
 __vcs_name() {
-	if [ -d .svn ]; then 
-		echo " svn"; 
-	elif [ -d RCS ]; 	then 
-		echo " RCS";  
-	elif __has_parent_dir ".git"; then
-		echo "$(__git_ps1 " g %s")";
-	elif __has_parent_dir ".hg"; then
-		echo " h $(hg branch)"
-	fi
+  if [ -d .svn ]; then
+    echo " svn";
+  elif [ -d RCS ];   then
+    echo " RCS";
+  elif __has_parent_dir ".git"; then
+    echo "$(__git_ps1 " g %s")";
+  elif __has_parent_dir ".hg"; then
+    echo " h $(hg branch)"
+  fi
 }
 
 # prompt code
@@ -55,17 +55,17 @@ color_reset='\[\e[0m\]'
 
 # variable color, depending on whether we are root, sudo'd as a user, or simply us
 set_user_color() {
-	# \[, \e, and \] would need extra escaping, so for clarity we return only the color code
-	white_on_red='[0;41m'
-	yellow_on_blue='[0;33;44m'
-	color_reset='[0m'
-	if [[ $EUID -eq 0 ]]; then
-		echo $white_on_red
-	elif [[ -n $SUDO_USER ]]; then
-		echo $yellow_on_blue
-	else
-		printf $color_reset
-	fi
+  # \[, \e, and \] would need extra escaping, so for clarity we return only the color code
+  white_on_red='[0;41m'
+  yellow_on_blue='[0;33;44m'
+  color_reset='[0m'
+  if [[ $EUID -eq 0 ]]; then
+    echo $white_on_red
+  elif [[ -n $SUDO_USER ]]; then
+    echo $yellow_on_blue
+  else
+    printf $color_reset
+  fi
 }
 user_color='\[\e$(set_user_color)\]'
 
@@ -131,78 +131,50 @@ bind '"\e[A":history-search-backward'
 bind '"\e[B":history-search-backward'
 
 # Linux
-if [ z`uname` = 'zLinux' ]; then 
-	alias ls='ls --color'
-	alias s="sudo"
+if [ z`uname` = 'zLinux' ]; then
+  alias ls='ls --color'
+  alias s="sudo"
 
-	# Debian/Ubuntu
-	if [ -f /etc/debian_version ]; then
-		# http://www.debian.org/doc/manuals/maint-guide/modify.en.html
-		alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
+  # Debian/Ubuntu
+  if [ -f /etc/debian_version ]; then
+    # http://www.debian.org/doc/manuals/maint-guide/modify.en.html
+    alias dquilt="quilt --quiltrc=${HOME}/.quiltrc-dpkg"
 
-	# RHELish
-	elif [ -f /etc/redhat-release ]; then
-		# the default path is sparse; 5.* only?
-		export PATH="$PATH:/sbin:/usr/sbin"
-	fi
+  # RHELish
+  elif [ -f /etc/redhat-release ]; then
+    # the default path is sparse; 5.* only?
+    export PATH="$PATH:/sbin:/usr/sbin"
+  fi
 
 # OS X
-elif [ z`uname` = 'zDarwin' ]; then 
-	# Homebrew executables
-	export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-	# gnu coreutils
-	export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-	export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
+elif [ z`uname` = 'zDarwin' ]; then
+  # Homebrew executables
+  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
+  # gnu coreutils
+  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
+  export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
 
-	alias ls='ls --color'
-	command -v gfind >/dev/null && alias find=gfind
-	alias s="sudo"
+  alias ls='ls --color'
+  command -v gfind >/dev/null && alias find=gfind
+  alias s="sudo"
 
-	VIRTUALENVWRAPPER_VIRTUALENV='/usr/local/share/python/virtualenv'
-	VIRTUALENVWRAPPER='/usr/local/share/python/virtualenvwrapper.sh'
-	if [ ! -f $VIRTUALENVWRAPPER_VIRTUALENV -o ! -f $VIRTUALENVWRAPPER ]; then
-		unset VIRTUALENVWRAPPER_VIRTUALENV
-		unset VIRTUALENVWRAPPER
-	fi
+  VIRTUALENVWRAPPER_VIRTUALENV='/usr/local/share/python/virtualenv'
+  VIRTUALENVWRAPPER='/usr/local/share/python/virtualenvwrapper.sh'
+  if [ ! -f $VIRTUALENVWRAPPER_VIRTUALENV -o ! -f $VIRTUALENVWRAPPER ]; then
+    unset VIRTUALENVWRAPPER_VIRTUALENV
+    unset VIRTUALENVWRAPPER
+  fi
 
-# Solaris
-elif [ z`uname` = 'zSunOS' ]; then 
-	alias s="pfexec"
-	export PATH=/usr/sfw/bin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+  if [ -d $(brew --prefix)/etc/bash_completion.d/ ]; then
+    for c in $(brew --prefix)/etc/bash_completion.d/*; do
+       . "$c"
+    done
+  fi
 
-	# override Solaris with Gentoo Prefix
-	if [ -d /opt/gentoo/bin ]; then
-		export PATH=/opt/gentoo/bin:/opt/gentoo/usr/bin:/opt/gentoo/sbin:/opt/gentoo/usr/sbin:$PATH
-		export MANPATH=/opt/gentoo/usr/share/man:/opt/gentoo/usr/share/binutils-data/x86_64-pc-solaris2.10/2.20.1/man:/opt/gentoo/usr/share/gcc-data/x86_64-pc-solaris2.10/4.2.4/man:/usr/share/man
-		alias ls='ls --color'
-	fi
+  # https://apple.stackexchange.com/questions/371997/suppressing-zsh-verbose-message-in-macos-catalina
+  export BASH_SILENCE_DEPRECATION_WARNING=1
+
 fi
-
-# also use my own personal executables
-PATH=$PATH:~/bin:~/.cabal/bin
-
-alias lr='ls -lrt'
-
-# virtualenvwrapper and virtualenv
-if [ -n "$VIRTUALENVWRAPPER" -a -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
-	export VIRTUALENVWRAPPER_VIRTUALENV
-	export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
-	source $VIRTUALENVWRAPPER
-fi
-
-# rbenv
-if which rbenv > /dev/null 2>&1; then eval "$(rbenv init -)"; fi
-
-# push/pop shortcuts
-alias u='pushd'
-alias o='popd'
-alias d='dirs'
-
-#show off (nothing)
-alias cyphertracer='hexdump -C /dev/random | grep --color=always "ca fe"'
-
-# https://apple.stackexchange.com/questions/371997/suppressing-zsh-verbose-message-in-macos-catalina
-export BASH_SILENCE_DEPRECATION_WARNING=1
 
 # https://apple.stackexchange.com/questions/141702/open-a-new-safari-window-in-the-current-space-from-terminal-with-multiple-tabs/141721#141721
 function Safari {
@@ -213,8 +185,27 @@ function Safari {
 EOD
 }
 
-if [ -d $(brew --prefix)/etc/bash_completion.d/ ]; then
-  for c in $(brew --prefix)/etc/bash_completion.d/*; do
-     . "$c"
-  done
+# also use my own personal executables
+PATH=$PATH:~/bin:~/.cabal/bin
+
+alias lr='ls -lrt'
+
+# virtualenvwrapper and virtualenv
+if [ -n "$VIRTUALENVWRAPPER" -a -n "$VIRTUALENVWRAPPER_VIRTUALENV" ]; then
+  export VIRTUALENVWRAPPER_VIRTUALENV
+  export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
+  source $VIRTUALENVWRAPPER
 fi
+
+# rbenv
+if which rbenv > /dev/null 2>&1; then
+  eval "$(rbenv init -)";
+fi
+
+# push/pop shortcuts
+alias u='pushd'
+alias o='popd'
+alias d='dirs'
+
+#show off (nothing)
+alias cyphertracer='hexdump -C /dev/random | grep --color=always "ca fe"'
