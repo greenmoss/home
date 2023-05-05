@@ -106,6 +106,11 @@ export BYOBU_NO_TITLE=1
 # for my own python development, usually don't want bytecode file clutter
 export PYTHONDONTWRITEBYTECODE=x
 
+# set readable colors for dark background
+# https://geoff.greer.fm/lscolors/
+export LSCOLORS=xefxcxdxbxegedabagacad
+export LS_COLORS='di=0;44:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43'
+
 # ensure multi-line commands stay as a single history command
 shopt -s cmdhist
 # do not string together multi-line commands with semi-colons in history
