@@ -99,7 +99,7 @@ export VISUAL=$EDITOR
 # X no termcap init
 export LESS="-#3iMRSx3X"
 export PAGER=less
-export HISTIGNORE="&:ls:[bf]g:exit:[ \t]*"
+export HISTIGNORE="&:ls:[bf]g:exit"
 HISTSIZE=500000
 HISTFILESIZE=5000000
 export BYOBU_NO_TITLE=1
@@ -154,11 +154,7 @@ if [ z`uname` = 'zLinux' ]; then
 # OS X
 elif [ z`uname` = 'zDarwin' ]; then
   # Homebrew executables
-  export PATH=/usr/local/bin:/usr/local/sbin:$PATH
-  # gnu coreutils
-  export PATH=/usr/local/opt/coreutils/libexec/gnubin:$PATH
-  export MANPATH=/usr/local/opt/coreutils/libexec/gnuman:$MANPATH
-
+  eval "$(/opt/homebrew/bin/brew shellenv)"
   alias ls='ls --color'
   command -v gfind >/dev/null && alias find=gfind
   alias s="sudo"
